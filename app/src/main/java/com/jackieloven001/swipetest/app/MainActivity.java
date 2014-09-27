@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
     int screenCenter;
     int x_cord, y_cord;
     int imageHeight;
+    float y_cord_edited;
 
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
@@ -89,8 +90,22 @@ public class MainActivity extends Activity {
 
                     x_cord = (int) event.getRawX();
                     y_cord = (int) event.getRawY();
-                    m_view.setX(x_cord - screenCenter);
-                    m_view.setY(y_cord - 275);
+
+                    // change in x at the beginning is original (x coordinate - screencenter)
+
+                    //y_cord_edited = (float) y_cord * 1 / 2;
+                    m_view.setX(1/2 * screenCenter + (x_cord - screenCenter));
+                    m_view.setY(m_view.getX());
+
+                    //m_view.setY(y_cord - 275);
+                    //if y cord is less than half of windowheight
+                    /*if (y_cord < windowheight) {
+                        m_view.setY(y_cord - 275);
+                    } else {
+                        m_view.setY(y_cord - 500);
+                    }*/
+
+
                     //- (imageHeight / 2)
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_MOVE:
