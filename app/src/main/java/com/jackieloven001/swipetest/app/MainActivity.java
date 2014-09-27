@@ -3,20 +3,17 @@ package com.jackieloven001.swipetest.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
+
 
 public class MainActivity extends Activity {
 
@@ -28,6 +25,7 @@ public class MainActivity extends Activity {
     int x_cord, y_cord;
     int imageHeight;
     float y_cord_edited;
+    float first_x;
 
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
@@ -64,7 +62,7 @@ public class MainActivity extends Activity {
 
             parentView.addView(m_view);
 
-            /*if (i == 0) {
+            if (i == 0) {
                 m_view.setRotation(-1);
             } else if (i == 1) {
                 m_view.setRotation(-5);
@@ -81,43 +79,32 @@ public class MainActivity extends Activity {
             } else if (i == 5) {
                 m_view.setRotation(5);
 
-            }*/
+            }
 
             m_topLayout.setOnTouchListener(new OnTouchListener() {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
 
-                    x_cord = (int) event.getRawX();
-                    y_cord = (int) event.getRawY();
-
-                    // change in x at the beginning is original (x coordinate - screencenter)
-
-                    //y_cord_edited = (float) y_cord * 1 / 2;
-                    m_view.setX(1/2 * screenCenter + (x_cord - screenCenter));
-                    m_view.setY(m_view.getX());
-
-                    //m_view.setY(y_cord - 275);
-                    //if y cord is less than half of windowheight
-                    /*if (y_cord < windowheight) {
-                        m_view.setY(y_cord - 275);
-                    } else {
-                        m_view.setY(y_cord - 500);
-                    }*/
-
-
-                    //- (imageHeight / 2)
                     switch (event.getAction()) {
-                        case MotionEvent.ACTION_MOVE:
-                            if (x_cord >= screenCenter) {
-
-                                m_view.setRotation((float) ((x_cord - screenCenter) * (Math.PI / 32)));
-                            } else {
-
-                                m_view.setRotation((float) ((x_cord - screenCenter) * (Math.PI / 32)));
-
-                            }
+                        case MotionEvent.ACTION_DOWN:
+                            first_x = event.getRawX();
                             break;
+
+                        case MotionEvent.ACTION_MOVE:
+
+                            m_view.setX(50 + event.getRawX() - first_x);
+                            m_view.setY(175/2 - (event.getRawX() - first_x));
+                            m_view.setRotation((float) ((event.getRawX() - first_x)* (Math.PI / 32)));
+
+
+                        if (event.getRawX() - first_x > 0) {
+                            //n.pushFood("name",True);
+                        } else {
+                            //n.pushFood("name",False);
+                        }
+                            break;
+
                         case MotionEvent.ACTION_UP:
                             m_view.setRotation(0);
                             parentView.removeView(m_view);
